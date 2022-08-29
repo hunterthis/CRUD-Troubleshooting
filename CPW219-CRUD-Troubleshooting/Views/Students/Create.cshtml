@@ -4,6 +4,16 @@
     ViewData["Title"] = "Create";
 }
 
+@if (ViewData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["Message"]
+    </div>
+}
+
+else
+{
+
 <h1>Create</h1>
 
 <h4>Student</h4>
@@ -33,7 +43,7 @@
         </form>
     </div>
 </div>
-
+}
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
