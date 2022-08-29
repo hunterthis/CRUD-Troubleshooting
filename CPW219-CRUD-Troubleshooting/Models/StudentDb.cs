@@ -12,7 +12,7 @@
         public static List<Student> GetStudents(SchoolContext context)
         {
             return (from s in context.Students
-                    select s).ToList(); // need to fix
+                    select s).ToList(); // need to fix, cannot access database
         }
 
         public static Student GetStudent(SchoolContext context, int id)
