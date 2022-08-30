@@ -30,9 +30,10 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         {
             if (!ModelState.IsValid)
             {
+                context.Students.Add(p);
                 await context.Students.AddAsync(p);
                 context.SaveChanges();
-                return RedirectToAction("Index");
+                return View();
             }
             //Show web page with errors
             return View(p);
@@ -67,8 +68,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var student = await context.Students.
-                FirstOrDefaultAsync(p => p.StudentId == id);
+            var student = await context.Students.FindAsync(id);
 
             if(student == null)
             {
@@ -86,7 +86,6 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             context.SaveChanges();
             return RedirectToAction("Index");
 
-            //Get Product from database
         }
     }
 }
