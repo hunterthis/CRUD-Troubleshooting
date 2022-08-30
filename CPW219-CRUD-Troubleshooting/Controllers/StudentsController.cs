@@ -26,15 +26,14 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Student p)
+        public async Task<IActionResult> Create(Student p)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                StudentDb.Add(p, context);
-                ViewData["Message"] = $"{p.Name} was added!";
-                return View();
+                await context.Students.AddAsync(p);
+                context.SaveChanges();
+                return RedirectToAction("Index");
             }
-
             //Show web page with errors
             return View(p);
         }
