@@ -15,11 +15,11 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Student> students = await (from Student in context.Students
-                                            select Student).ToListAsync();
+            List<Student> students = await (from student in context.Students
+                                            select student).ToListAsync();
             return View(students);
         }
-        [HttpGet]
+       // [HttpGet]
         public IActionResult Create()
         {
             return View();
