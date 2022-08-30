@@ -57,12 +57,13 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             if (ModelState.IsValid)
             {
                 context.Update(p);
-                await context.Students.AddAsync(p);
+                await context.SaveChangesAsync();
                 context.SaveChanges();
                 ViewData["Message"] = "Product Updated!";
                 return RedirectToAction("Index");
             }
             //return view with errors
+            context.SaveChanges ();
             return View(p);
         }
 
