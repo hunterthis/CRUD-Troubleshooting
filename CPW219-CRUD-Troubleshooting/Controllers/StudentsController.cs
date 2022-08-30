@@ -19,7 +19,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
                                             select Student).ToListAsync();
             return View(students);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -38,43 +38,55 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
             return View(p);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             //get the product by id
-            Student p = StudentDb.GetStudent(context, id);
-
+            var student = await context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
             //show it on web page
-            return View();
+            return View(student);
         }
 
         [HttpPost]
-        public IActionResult Edit(Student p)
+        public async Task<IActionResult> Edit(Student p)
         {
             if (ModelState.IsValid)
             {
-                StudentDb.Update(context, p);
+                context.Update(p);
+                await context.Students.AddAsync(p);
+                context.SaveChanges();
                 ViewData["Message"] = "Product Updated!";
-                return View(p);
+                return RedirectToAction("Index");
             }
             //return view with errors
             return View(p);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            Student p = StudentDb.GetStudent(context, id);
-            return View(p);
+            var student = await context.Students.
+                FirstOrDefaultAsync(p => p.StudentId == id);
+
+            if(student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirm(int id)
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
-            //Get Product from database
-            Student p = StudentDb.GetStudent(context, id);
 
-            StudentDb.Delete(context, p);
-
+            var student = await context.Students.FindAsync(id);
+            context.Students.Remove(student);
+            context.SaveChanges();
             return RedirectToAction("Index");
+
+            //Get Product from database
         }
     }
 }
