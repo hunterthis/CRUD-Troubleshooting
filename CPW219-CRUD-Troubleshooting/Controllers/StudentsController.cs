@@ -12,14 +12,14 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         {
             context = dbContext;
         }
-
+        
         public async Task<IActionResult> Index()
         {
             List<Student> students = await (from student in context.Students
                                             select student).ToListAsync();
             return View(students);
         }
-       // [HttpGet]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -28,7 +28,7 @@ namespace CPW219_CRUD_Troubleshooting.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Student p)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 context.Students.Add(p);
                 await context.Students.AddAsync(p);
